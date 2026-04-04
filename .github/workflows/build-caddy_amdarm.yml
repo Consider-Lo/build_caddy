@@ -1,0 +1,56 @@
+name: Build AMD64ARM64 Caddy
+on: 
+  push:
+    branches: [ main ]
+  workflow_dispatch: # 允许手动点击按钮运行
+
+jobs:
+  build:
+    name: Build ${{ matrix.goarch }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goarch: amd64
+            goamd64: v3      # 针对现代云服务器优化
+          - goarch: arm64
+            goamd64: v1      # ARM 架构不使用此参数
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          check-latest: true
+
+      - name: Install xcaddy
+        run: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+      - name: Build Caddy with Plugins
+        env:
+          GOOS: linux
+          GOARCH: ${{ matrix.goarch }}
+          GOAMD64: ${{ matrix.goamd64 }}
+        run: |
+          # 使用重定向语法修复 klzgrad/forwardproxy 编译报错
+          xcaddy build \
+            --with github.com/caddy-dns/cloudflare \
+            --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@8563441787288fb82379918a354c0c355b5fd83c
+
+      - name: Package Binary
+        run: |
+          # 给予执行权限并重命名
+          chmod +x caddy
+          mv caddy caddy-linux-${{ matrix.goarch }}
+          # 打包为 tar.gz 以保留 Linux 权限位
+          tar -czvf caddy-linux-${{ matrix.goarch }}.tar.gz caddy-linux-${{ matrix.goarch }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: caddy-bin-${{ matrix.goarch }}
+          path: caddy-linux-${{ matrix.goarch }}.tar.gz
+          retention-days: 7
