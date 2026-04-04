@@ -1,0 +1,35 @@
+name: Build Custom Caddy (PQC Supported)
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          # 必须使用 Go 1.23 或更高版本以原生支持 ML-KEM
+          go-version: '1.23'
+          check-latest: true
+
+      - name: Install xcaddy
+        run: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+      - name: Build Caddy with Plugins
+        run: |
+          # GOAMD64=v3 可选，针对现代 CPU 优化
+          GOOS=linux GOARCH=amd64 \
+          xcaddy build \
+            --with github.com/caddy-dns/cloudflare \
+            --with github.com/klzgrad/forwardproxy
+
+      - name: Verify Build & PQC Support
+        run: |
+          ./caddy version
+          ./caddy list-modules | grep tls
+          
+      - name: Upload Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: caddy-pqc-linux
+          path: ./caddy
