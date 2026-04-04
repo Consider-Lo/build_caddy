@@ -21,7 +21,7 @@ jobs:
           GOOS=linux GOARCH=amd64 \
           xcaddy build \
             --with github.com/caddy-dns/cloudflare \
-            --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy
+            --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@8563441787288fb82379918a354c0c355b5fd83c
 
       - name: Verify Build & PQC Support
         run: |
