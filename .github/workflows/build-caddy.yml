@@ -1,5 +1,8 @@
 name: Build Custom Caddy (PQC Supported)
-on: [push, workflow_dispatch]
+on: 
+  push:
+    branches: [ main ]
+  workflow_dispatch: # 允许手动点击按钮运行
 
 jobs:
   build:
