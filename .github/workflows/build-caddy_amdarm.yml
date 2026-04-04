@@ -1,7 +1,7 @@
 name: Build AMD64ARM64 Caddy
 on: 
-  push:
-    branches: [ main ]
+#  push:
+#    branches: [ main ]
   workflow_dispatch: # 允许手动点击按钮运行
 
 jobs:
