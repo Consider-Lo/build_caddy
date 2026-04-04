@@ -48,9 +48,22 @@ jobs:
           # 打包为 tar.gz 以保留 Linux 权限位
           tar -czvf caddy-linux-${{ matrix.goarch }}.tar.gz caddy-linux-${{ matrix.goarch }}
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      # 发布到 Release 页面
+      - name: Create Release and Upload
+        uses: softprops/action-gh-release@v2
         with:
-          name: caddy-bin-${{ matrix.goarch }}
-          path: caddy-linux-${{ matrix.goarch }}.tar.gz
-          retention-days: 7
+          # 定义 Release 的标签（Tag），可以使用日期
+          tag_name: caddy-pqc-${{ github.run_number }}
+          name: "Caddy Custom Build (PQC Support) - Run ${{ github.run_number }}"
+          body: |
+            这是自动编译的自定义 Caddy 二进制文件。
+            - 包含插件: forwardproxy-naive, cloudflare-dns
+            - 支持特性: X25519MLKEM768 (抗量子加密)
+            - 编译环境: Go 1.23
+          draft: false
+          prerelease: false
+          # 指定要上传的文件（支持通配符）
+          files: |
+            caddy-linux-${{ matrix.goarch }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
