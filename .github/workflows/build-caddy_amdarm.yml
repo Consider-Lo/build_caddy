@@ -38,6 +38,7 @@ jobs:
           # 使用重定向语法修复 klzgrad/forwardproxy 编译报错
           xcaddy build \
             --with github.com/caddy-dns/cloudflare \
+            --with github.com/mholt/caddy-l4 \
             --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@8563441787288fb82379918a354c0c355b5fd83c
 
       - name: Package Binary
