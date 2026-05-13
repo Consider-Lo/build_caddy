@@ -58,7 +58,7 @@ jobs:
           name: "Caddy Custom Build (PQC Support) - Run ${{ github.run_number }}"
           body: |
             这是自动编译的自定义 Caddy 二进制文件。
-            - 包含插件: forwardproxy-naive, cloudflare-dns
+            - 包含插件: forwardproxy-naive, cloudflare-dns, caddy-l4
             - 支持特性: X25519MLKEM768 (抗量子加密)
             - 编译环境: Go 1.23
           draft: false
