@@ -39,12 +39,12 @@ jobs:
           xcaddy build \
             --with github.com/caddy-dns/cloudflare \
             --with github.com/mholt/caddy-l4 \
-            --with github.com/mholt/caddy-webdav \
             --with github.com/WeidiDeng/caddy-cloudflare-ip \
             --with github.com/xcaddyplugins/caddy-trusted-cloudfront \
             --with github.com/caddyserver/jsonc-adapter \
             --with github.com/mholt/caddy-events-exec \
             --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@naive
+       # --with github.com/mholt/caddy-webdav \
        # --with github.com/caddyserver/forwardproxy=github.com/klzgrad/forwardproxy@8563441787288fb82379918a354c0c355b5fd83c
 
       - name: Package Binary
@@ -64,11 +64,11 @@ jobs:
           name: "Caddy Custom Build (PQC Support) - Run ${{ github.run_number }}"
           body: |
             这是自动编译的自定义 Caddy 二进制文件。
-            - 包含插件: forwardproxy-naive, cloudflare-dns, caddy-l4, caddy-webdav, caddy-cloudflare-ip, caddy-trusted-cloudfront, jsonc-adapter, caddy-events-exec
+            - 包含插件: forwardproxy-naive, cloudflare-dns, caddy-l4, <del>caddy-webdav</del>, caddy-cloudflare-ip, caddy-trusted-cloudfront, jsonc-adapter, caddy-events-exec
             - forwardproxy-naive 支持 [https://github.com/klzgrad/naiveproxy] 的 naiveproxy 客户端
             - cloudflare-dns 支持由 Cloudflare 解析的域名以 DNS-01 验证方式申请及更新 TLS 证书、支持由 Cloudflare 解析的域名可 ECH 发布
             - caddy-l4 支持 Caddy 的第 4 层（TCP/UDP）应用，可实现 SNI 分流共用 TCP/UDP 端口（含定向 UDP 转发）。SNI 分流共用 TCP 端口时支持 PROXY protocol 发送，即发送真实来源 IP 和端口给后端
-            - caddy-webdav 支持 WebDAV 协议的网盘应用（服务端）
+            <del>- caddy-webdav 支持 WebDAV 协议的网盘应用（服务端）（弃用）</del>
             - caddy-cloudflare-ip 支持启用可信任 Cloudflare IPs，可实现使用 Cloudflare CDN 后也能获取到客户端真实 IP
             - caddy-trusted-cloudfront 支持启用可信任 Cloudfront IPs，可实现使用 Cloudfront CDN 后也能获取到客户端真实 IP
             - jsonc-adapter 支持 Caddy 可使用 JSONC 格式配置文件（即可保留注释使用）
