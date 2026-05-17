@@ -3,11 +3,13 @@
 
 # Caddyfile
 
+```
 {
 	events {
 		on cert_obtained exec systemctl reload mydaemon
 	}
 }
+```
 
 # json
 
