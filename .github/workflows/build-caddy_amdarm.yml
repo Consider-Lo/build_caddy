@@ -74,7 +74,7 @@ jobs:
             - jsonc-adapter 支持 Caddy 可使用 JSONC 格式配置文件（即可保留注释使用）
             - caddy-events-exec 支持事件执行应用，可解决相关程序不支持‘证书热更新’问题
             - 支持特性: X25519MLKEM768 (抗量子加密)
-            - 编译环境: Go 1.23
+            - 编译环境: Go 1.26
           draft: false
           prerelease: false
           # 指定要上传的文件（支持通配符）
